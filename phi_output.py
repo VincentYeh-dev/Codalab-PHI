@@ -41,6 +41,7 @@ def createModel(tokenizer):
     return model
 
 
+plm = "EleutherAI/pythia-70m-deduped"
 if __name__ == '__main__':
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -52,10 +53,10 @@ if __name__ == '__main__':
     # results_path = 'answer_70m_epoch_30_batch_2_lr5e_5.txt'
     # gen_text_path = 'gen_text_70m_epoch_30_batch_2_lr5e_5.json'
 
-    plm = args[1]
-    model_file_path = args[2]
-    glob_path = args[3]
-    results_path = args[4]
+    # plm = args[1]
+    model_file_path = args[1]
+    glob_path = args[2]
+    results_path = args[3]
     gen_text_path = "gen.json"
 
     clear_file(results_path)

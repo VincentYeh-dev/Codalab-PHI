@@ -21,9 +21,9 @@ TOKEN_EOS = '<|END|>'
 TOKEN_PAD = '<|pad|>'
 TOKEN_SEP = '\n\n####\n\n'
 EPOCHS = 3
-# plm = "EleutherAI/pythia-70m-deduped"
+plm = "EleutherAI/pythia-70m-deduped"
 # plm = "EleutherAI/pythia-160m"
-plm = "EleutherAI/pythia-410m"
+# plm = "EleutherAI/pythia-410m"
 
 
 class BatchSampler:

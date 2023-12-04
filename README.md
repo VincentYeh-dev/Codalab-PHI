@@ -12,15 +12,25 @@ pip install -U matplotlib
 
 ## 使用程式
 
-### tsv_generator_empty_output.py
+### tsv_generator.py
 
-此程式會將將病歷文本與標註資料進行資料處理並產生訓練用csv檔。
+此程式會將病歷文本與標註資料進行資料處理並產生訓練或驗證用之tsv檔。
+輸入所有訓練病例文本的路徑**data/dataset/*.txt**，以及訓練標註檔的路徑**data/answer.txt**，經由此程式預處理後輸出檔案**data/dataset.tsv**。
 
-輸入病例文本**10.txt**或是所有病例文本**data/*.txt**的路徑，以及標註檔**answer.txt**路徑，使用此程式預處理後輸出訓練用檔案**dataset.tsv**。
+輸入所有驗證病例文本的路徑**data/validation/*.txt**，以及驗證標註檔的路徑**data/validation_answer.txt**，經由此程式預處理後輸出檔案**data/validation.tsv**。
 
 ```shell
-tsv_generator_empty_output.py "data/10.txt" "data/answer.txt" "dataset.tsv"
+tsv_generator.py "data/dataset/*.txt" "data/answer.txt" "data/dataset.tsv"
+tsv_generator.py "data/validation/*.txt" "data/validation_answer.txt" "data/validation.tsv"
 ```
+
+參數列表：
+
+- 病例文本的路徑：**data/dataset/*.txt**
+- 標註檔的路徑：**data/answer.txt**
+- 輸出檔案路徑：**data/dataset.tsv**
+
+
 
 **10.txt**
 
@@ -47,19 +57,33 @@ Episode No:  09F016547J
 
 
 
-### phi_output.py
+### training.py
+
+訓練模型，儲存權重檔pt，並繪製出訓練損失、驗證損失。
 
 ```shell
-phi_output.py "EleutherAI/pythia-70m-deduped" "models/pythia/70m_epoch_3_batch_1_lr5e_5.pt" "data/codalab/1st/validation/*.txt" "output/answer_70m_epoch_3_batch_1_lr5e_5.txt" "output/gen_text_70m_epoch_3_batch_1_lr5e_5.json"
+training.py "data/dataset.tsv" "models/model.pt" 1000 "data/validation.tsv"
 ```
 
-- 預訓練模型名稱："EleutherAI/pythia-70m-deduped" 
-- 預訓練模型路徑："models/pythia/70m_epoch_3_batch_1_lr5e_5.pt"
-- 輸入病例資料路徑："data/codalab/1st/validation/*.txt" 
-- 模型答案檔輸出路徑："output/answer_70m_epoch_3_batch_1_lr5e_5.txt" 
+參數列表：
+
+- 預處理後訓練資料集路徑：**data/dataset.tsv**，或**data/dataset_*.tsv**
+- 模型輸出路徑：**models/model.pt**
+- 顯卡最大切割記憶體：**1000**
+- 預處理後驗證資料集路徑：**data/validation.tsv**
 
 
 
-https://huggingface.co/docs/transformers/main_classes/output
-https://huggingface.co/docs/transformers/v4.35.0/en/model_doc/gpt_neox#transformers.GPTNeoXConfig
-https://pytorch.org/docs/stable/generated/torch.optim.AdamW.html
+### phi_output.py
+
+載入預訓練的權重檔pt到模型，讀取病例並輸出答案檔。
+
+```shell
+phi_output.py "models/model.pt" "data/competition/*.txt" "output/answer.txt"
+```
+
+參數列表：
+
+- 預訓練模型路徑：**models/model.pt**
+- 比賽病例資料路徑：**data/competition/*.txt**
+- 比賽答案檔輸出路徑：**output/answer.txt**
